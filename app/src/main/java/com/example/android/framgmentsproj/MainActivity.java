@@ -29,21 +29,14 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCreateDialog(savedInstance).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Bomb Alert");
+                builder.show();
             }
         });
        // onCreateDialog(savedInstanceState ).show();
         Log.d("MyLogs","In Create");
-    }
-
-
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Bomb Alert");
-
-        // Create the AlertDialog object and return it
-        return builder.create();
     }
 
     private BroadcastReceiver receiver1 = new BroadcastReceiver() {
@@ -80,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        onCreateDialog(outState ).show();
         Log.d("MyLogs","In onSaveInstanceState");
     }
 
