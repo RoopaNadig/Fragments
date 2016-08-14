@@ -12,6 +12,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +24,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        onCreateDialog(savedInstanceState ).show();
+        final Bundle savedInstance = savedInstanceState;
+        Button btn = (Button)findViewById(R.id.btn_id);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCreateDialog(savedInstance).show();
+            }
+        });
+       // onCreateDialog(savedInstanceState ).show();
         Log.d("MyLogs","In Create");
     }
 
@@ -70,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        onCreateDialog(outState ).show();
         Log.d("MyLogs","In onSaveInstanceState");
     }
 
@@ -97,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         registerReceiver(receiver1,filter1);
        // registerReceiver(receiver,filter);
         Log.d("MyLogs","In resume");
