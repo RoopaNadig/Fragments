@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+               /* AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
                 builder.setMessage("Bomb Alert");
-                builder.show();
+                builder.show();*/
             }
         });
        // onCreateDialog(savedInstanceState ).show();
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        Toast.makeText(this,"Im in stop",Toast.LENGTH_SHORT).show();
         Log.d("MyLogs","In Stop");
     }
 
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
        // unregisterReceiver(receiver);
         unregisterReceiver(receiver1);
-
+        Toast.makeText(this,"Im in pause",Toast.LENGTH_SHORT).show();
         Log.d("MyLogs","In pause");
     }
 
