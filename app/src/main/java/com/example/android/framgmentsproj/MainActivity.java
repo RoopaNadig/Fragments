@@ -12,11 +12,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener,View.OnDragListener{
 
     private IntentFilter filter = new IntentFilter(Intent.ACTION_POWER_CONNECTED);
     private IntentFilter filter1 = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
@@ -24,19 +28,51 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Bundle savedInstance = savedInstanceState;
-        Button btn = (Button)findViewById(R.id.btn_id);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               /* AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-                builder.setMessage("Bomb Alert");
-                builder.show();*/
-            }
-        });
-       // onCreateDialog(savedInstanceState ).show();
+        findViewById(R.id.textView1).setOnTouchListener(this);
+        findViewById(R.id.pinkLayout).setOnDragListener(this);
+        findViewById(R.id.yellowLayout).setOnDragListener(this);
         Log.d("MyLogs","In Create");
+    }
+
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+            view.startDrag(null, shadowBuilder, view, 0);
+            view.setVisibility(View.INVISIBLE);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean onDrag(View layoutview, DragEvent dragevent) {
+        int action = dragevent.getAction();
+        switch (action) {
+            case DragEvent.ACTION_DRAG_STARTED:
+                Log.d("MyLogs", "Drag event started");
+                return true;
+            case DragEvent.ACTION_DRAG_ENTERED:
+                Log.d("MyLogs", "Drag event entered into "+layoutview.toString());
+                return true;
+            case DragEvent.ACTION_DRAG_EXITED:
+                Log.d("MyLogs", "Drag event exited from "+layoutview.toString());
+                return true;
+            case DragEvent.ACTION_DROP:
+                Log.d("MyLogs", "Dropped");
+                View view = (View) dragevent.getLocalState();
+                ViewGroup owner = (ViewGroup) view.getParent();
+                owner.removeView(view);
+                LinearLayout container = (LinearLayout) layoutview;
+                container.addView(view);
+                view.setVisibility(View.VISIBLE);
+                return true;
+            case DragEvent.ACTION_DRAG_ENDED:
+                Log.d("MyLogs", "Drag ended");
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     private BroadcastReceiver receiver1 = new BroadcastReceiver() {
